@@ -1,13 +1,9 @@
-//import { jwtDecode } from "jwt-decode";
-//import { useEffect } from "react";
 import { Button, Col, Image, Nav, Row, Spinner } from "react-bootstrap";
 import ProfilePostCard from "./ProfilePostCard";
 import { useDispatch, useSelector } from "react-redux";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "./AuthProvider"; 
 import { fetchPostByUser } from "../features/posts/postsSlice";
-//import { fetchPostByUser } from "../features/posts/postsSlice";
-//useDispatch this go with useSelector
 
 export default function ProfileMidBody() {
     const url = "https://pbs.twimg.com/profile_banners/83072625/1602845571/1500x500";
@@ -81,7 +77,7 @@ export default function ProfileMidBody() {
             {loading && (
                 <Spinner animation="border" className="ms-3 mt-3" variant="primary" />
             )}
-            {posts.length > 0 && posts.map((post) => (
+            {posts.map((post) => (
                 <ProfilePostCard key={post.id} post={post} />
             ))}
         </Col>
