@@ -2,7 +2,10 @@
 //import { useEffect } from "react";
 import { Button, Col, Image, Nav, Row, Spinner } from "react-bootstrap";
 import ProfilePostCard from "./ProfilePostCard";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useContext, useEffect } from "react";
+import { AuthContext } from "./AuthProvider"; 
+import { fetchPostByUser } from "../features/posts/postsSlice";
 //import { fetchPostByUser } from "../features/posts/postsSlice";
 //useDispatch this go with useSelector
 
@@ -10,17 +13,14 @@ export default function ProfileMidBody() {
     const url = "https://pbs.twimg.com/profile_banners/83072625/1602845571/1500x500";
     const pic = "https://pbs.twimg.com/profile_images/1587405892437221376/h167Jlb2_400x400.jpg";
 
+    const dispatch = useDispatch();
     const posts = useSelector(store => store.posts.posts)
     const loading = useSelector(store => store.posts.loading)
+    const { currentUser } = useContext(AuthContext);
 
-    // useEffect(() => {
-    //     const token = localStorage.getItem("authToken");
-    //     if (token) {
-    //         const decodedToken = jwtDecode(token);
-    //         const userId = decodedToken.id;
-    //         dispatch(fetchPostByUser(userId));
-    //     }
-    // }, [dispatch]);
+    useEffect(() => {
+        dispatch(fetchPostByUser(currentUser.uid));
+    }, [dispatch, currentUser]);
 
 
     return (
@@ -82,7 +82,7 @@ export default function ProfileMidBody() {
                 <Spinner animation="border" className="ms-3 mt-3" variant="primary" />
             )}
             {posts.length > 0 && posts.map((post) => (
-                <ProfilePostCard key={post.id} content={post.content} postId={post.id} />
+                <ProfilePostCard key={post.id} post={post} />
             ))}
         </Col>
     )
